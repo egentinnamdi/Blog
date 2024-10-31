@@ -4,10 +4,9 @@ function Footer() {
   return (
     <Box
       component="div"
-      className="flex justify-center items-center text-xs lg:text-xl capitalize p-6 border border-white"
+      className="flex justify-center items-center text-center text-xs lg:text-xl capitalize p-6 border border-white"
     >
-      &copy; {new Date().getFullYear()} Twitter LinkedIn Email RSS feed Add to
-      Feedly
+      &copy; {new Date().getFullYear()} Flex Digest. All Rights Reserved.
     </Box>
   );
 }

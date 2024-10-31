@@ -3,7 +3,8 @@ import PostContainer from "./PostContainer";
 import Navbar from "./Navbar";
 import PostListContainer from "./PostListContainer";
 import Footer from "./Footer";
-
+import { memo } from "react";
+const ListContainer = memo(PostListContainer);
 function Home() {
   return (
     <Box className="border border-white  space-y-4" component="div">
@@ -24,7 +25,7 @@ function Home() {
         </Typography>
       </Box>
       <PostContainer />
-      <PostListContainer />
+      <ListContainer />
       <Footer />
     </Box>
   );

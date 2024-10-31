@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { useState } from "react";
+import Logo from "./ui/Logo";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -24,15 +25,14 @@ function Navbar() {
     <Box className="w-full">
       <AppBar position="static" sx={{ background: "inherit" }}>
         <Toolbar
+          className="p-5"
           sx={{
             background: "inherit",
             display: "flex",
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="h2" component="h2" class="capitalize text-xl">
-            your name
-          </Typography>
+          <Logo />
           <Box>
             <IconButton
               className="text-4xl"

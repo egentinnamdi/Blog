@@ -1,7 +1,10 @@
-import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Skeleton, Typography } from "@mui/material";
 import PostListItem from "./PostListItem";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useQuery } from "@tanstack/react-query";
+import { getPosts } from "./services/supabase";
+import { usePosts } from "./context/PostProvider";
 
 const theme = createTheme({
   components: {
@@ -24,12 +27,15 @@ const theme = createTheme({
 });
 
 function PostListContainer() {
-  const [page, setPage] = useState(1);
-  function handlePage() {
-    if (page === 5) {
-      setPage(1);
-    }
-    setPage((prev) => prev + 1);
+  const { data, previous, next, dispatch, page } = usePosts();
+
+  function handlePage(event, pageNum) {
+    dispatch({
+      type: "updatePage",
+      payload: {
+        pageNum,
+      },
+    });
   }
   return (
     <>
@@ -41,24 +47,55 @@ function PostListContainer() {
       >
         all blog posts
       </Typography>
+
       <Grid container spacing={3}>
-        <PostListItem />
-        <PostListItem />
-        <PostListItem />
-        <PostListItem />
-        <PostListItem />
-        <PostListItem />
+        {data ? (
+          data?.map(
+            (item, index) =>
+              index >= previous &&
+              index <= next && <PostListItem key={item.id} item={item} />
+          )
+        ) : (
+          <>
+            <Grid item lg={4} md={6} xs={12} className="">
+              <Skeleton
+                variant="rounded"
+                width="100%"
+                height="100%"
+                className="!bg-skeleton"
+              />
+            </Grid>
+            <Grid item lg={4} md={6} xs={12} className="">
+              <Skeleton
+                variant="rounded"
+                width="100%"
+                height="100%"
+                className="!bg-skeleton"
+              />
+            </Grid>
+            <Grid item lg={4} md={6} xs={12} className="">
+              <Skeleton
+                variant="rounded"
+                width={100}
+                height={100}
+                className="!bg-skeleton"
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
       <Box component="div" className="flex justify-center">
         <ThemeProvider theme={theme}>
           <Pagination
-            count={5}
+            boundaryCount={1}
+            count={Math.round(data?.length / 5) || 5}
             color="secondary"
             size="large"
             shape="rounded"
             page={page}
             onChange={handlePage}
             className="text-white"
+            // onClick={() => alert("Next page")}
           ></Pagination>
         </ThemeProvider>
       </Box>
