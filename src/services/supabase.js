@@ -7,9 +7,8 @@ const key =
 
 const supabase = await createClient(url, key);
 
-async function getPosts(id) {
+async function getPosts() {
   const { data, error } = await supabase.from("blog-posts").select("*");
-  // .range(45, 50);
 
   !error
     ? toast.success("Posts retrieved successfully")

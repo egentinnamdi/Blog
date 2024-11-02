@@ -1,9 +1,12 @@
-import { Box, Grid, Paper, Skeleton, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { usePosts } from "./context/PostProvider";
 
-function PostListItem({ item }) {
+function PostListItem({ item, index }) {
+  const { previous, next } = usePosts();
   const { title, created_at: date, description, image, id } = item;
   const formattedDate = new Date(date.slice(0, 10)).toDateString();
+  console.log(index, previous, next);
   return (
     <Grid item lg={4} md={6} xs={12} className="">
       <Paper

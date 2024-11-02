@@ -1,10 +1,8 @@
 import { Box, Grid, Pagination, Skeleton, Typography } from "@mui/material";
 import PostListItem from "./PostListItem";
-import { useReducer, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "./services/supabase";
 import { usePosts } from "./context/PostProvider";
+import { HashLink } from "react-router-hash-link";
 
 const theme = createTheme({
   components: {
@@ -26,7 +24,7 @@ const theme = createTheme({
   },
 });
 
-function PostListContainer() {
+function PostListContainer({ scroll }) {
   const { data, previous, next, dispatch, page } = usePosts();
 
   function handlePage(event, pageNum) {
@@ -38,7 +36,7 @@ function PostListContainer() {
     });
   }
   return (
-    <>
+    <Box className="space-y-10">
       <Typography
         variant="h4"
         component="h2"
@@ -50,11 +48,14 @@ function PostListContainer() {
 
       <Grid container spacing={3}>
         {data ? (
-          data?.map(
-            (item, index) =>
+          data?.map((item, index) => {
+            return (
               index >= previous &&
-              index <= next && <PostListItem key={item.id} item={item} />
-          )
+              index <= next && (
+                <PostListItem key={item.id} item={item} index={index} />
+              )
+            );
+          })
         ) : (
           <>
             <Grid item lg={4} md={6} xs={12} className="">
@@ -86,20 +87,26 @@ function PostListContainer() {
       </Grid>
       <Box component="div" className="flex justify-center">
         <ThemeProvider theme={theme}>
-          <Pagination
-            boundaryCount={1}
-            count={Math.round(data?.length / 5) || 5}
-            color="secondary"
-            size="large"
-            shape="rounded"
-            page={page}
-            onChange={handlePage}
-            className="text-white"
-            // onClick={() => alert("Next page")}
-          ></Pagination>
+          <HashLink smooth to="/#footer">
+            <Pagination
+              boundaryCount={1}
+              count={Math.round(data?.length / 5) || 5}
+              color="secondary"
+              size="large"
+              shape="rounded"
+              page={page}
+              onChange={handlePage}
+              className="text-white"
+              onClick={() =>
+                scroll.current.scrollIntoView({
+                  behavior: "smooth",
+                })
+              }
+            ></Pagination>
+          </HashLink>
         </ThemeProvider>
       </Box>
-    </>
+    </Box>
   );
 }
 

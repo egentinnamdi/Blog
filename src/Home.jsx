@@ -3,11 +3,12 @@ import PostContainer from "./PostContainer";
 import Navbar from "./Navbar";
 import PostListContainer from "./PostListContainer";
 import Footer from "./Footer";
-import { memo } from "react";
+import { memo, useRef } from "react";
 const ListContainer = memo(PostListContainer);
 function Home() {
+  const scroll = useRef(null);
   return (
-    <Box className="border border-white  space-y-4" component="div">
+    <Box className="  space-y-4" component="div">
       <Navbar />
       <Box className=" flex items-end justify-center w-full border-y border-white">
         <Typography
@@ -25,8 +26,8 @@ function Home() {
         </Typography>
       </Box>
       <PostContainer />
-      <ListContainer />
-      <Footer />
+      <ListContainer scroll={scroll} />
+      <Footer scroll={scroll} />
     </Box>
   );
 }

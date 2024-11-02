@@ -12,10 +12,14 @@ function reducer(state, { type, payload }) {
   switch (type) {
     case "updatePage":
       const condition = payload.pageNum > state.page;
+      const pageDiff = Math.abs(5 * (payload.pageNum - state.page));
+      console.log(pageDiff);
       return {
         ...state,
-        previous: condition ? state.previous + 5 : state.previous - 5,
-        next: condition ? state.next + 5 : state.next - 5,
+        previous: condition
+          ? state.previous + pageDiff
+          : state.previous - pageDiff,
+        next: condition ? state.next + pageDiff : state.next - pageDiff,
         page: payload.pageNum,
       };
   }
